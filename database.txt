@@ -1,0 +1,65 @@
+-----------------------------ESERCIZIO1-------------------------------
+
+ESTRAI I CLIENTI CON NOME MARIO:
+
+SELECT * FROM clienti WHERE nome = 'Mario'
+
+-----------------------------ESERCIZIO2-------------------------------
+ESTRAI NOME E COGNOME CLIENTI NATI NEL 1982:
+
+
+SELECT Nome, Cognome FROM clienti WHERE annoNascita = 1982;
+
+-----------------------------ESERCIZIO3-------------------------------
+ESTRAI N.FATTURE CON IVA AL 20%:
+
+SELECT Iva, COUNT (*) FROM Fatture WHERE Iva = 20 GROUP BY Iva;
+
+-----------------------------ESERCIZIO4-------------------------------
+ESTRAI I PRODOTTI ATTIVATI NEL 2017 ANCORA IN PRODUZIONE/COMMERCIO:
+
+
+SELECT * FROM Prodotti WHERE EXTRACT(YEAR FROM DataAttivazione) = 2017 
+AND (inCommercio = TRUE OR inProduzione= TRUE ) ;
+
+-----------------------------ESERCIZIO5-------------------------------
+ESTRAI LE FATTURE CON IMPORTO <1000 E CLIENTI AD ESSE COLLEGATE:
+
+
+SELECT Fatture, Clienti 
+FROM Fatture 
+JOIN Clienti ON Fatture.IdCliente = Clienti.NumeroCliente
+WHERE Fatture.Importo < 1000;
+
+-----------------------------ESERCIZIO6-------------------------------
+RIPORTARE ELENCO FATTURE CON AGGIUNTA NOME FORNITORE:
+
+
+SELECT Fatture, Fornitori.denominazione 
+FROM Fatture 
+JOIN Fornitori ON Fatture.NumeroFornitore = Fornitori.numeroFornitore;
+
+-----------------------------ESERCIZIO7-------------------------------
+RIPORTARE ELENCO FATTURE CON IVA AL 20% E N.FATTURE PER OGNI ANNO:
+
+
+SELECT EXTRACT(YEAR FROM DataFattura) AS Anno,
+COUNT(*) FROM fatture
+WHERE Iva = 20
+GROUP BY Anno;
+
+-----------------------------ESERCIZIO8-------------------------------
+RIPORTARE NUM DI FATTURE E LA SOMMA DEI RELATIVI IMPORTI DIVISI PER ANNO FATTURAZIONE:
+
+
+SELECT EXTRACT(YEAR FROM DataFattura) AS Anno, SUM(importo) AS SommaAnnuale,
+COUNT(*) FROM fatture
+GROUP BY Anno;
+
+-----------------------------EXTRA1-------------------------------
+
+SELECT Tipologia, EXTRACT(YEAR FROM DataFattura) AS Anno, COUNT(*) AS NumeroFatture
+FROM Fatture
+WHERE Tipologia = 'A' 
+GROUP BY Tipologia, Anno
+HAVING COUNT(*) >= 2;
